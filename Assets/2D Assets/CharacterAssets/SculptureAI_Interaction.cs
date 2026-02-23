@@ -70,7 +70,7 @@ public class SculptureAI_Interaction : MonoBehaviour
             if (StruggleProgress == 100) // Player Has broken Free!!
             {
                 Debug.Log("PLayer is set free");
-                countdown = 10f;
+                countdown = 20f; // in seconds
                 NotifText.text = "";
                 PlayerMovement.ThawPlayer();
                 SculptureIsActive = false;
