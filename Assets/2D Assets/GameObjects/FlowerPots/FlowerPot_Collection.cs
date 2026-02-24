@@ -37,15 +37,15 @@ public class FlowerPot_Collection : MonoBehaviour
         if (playerInRange && Input.GetKeyDown(KeyCode.F) && CanBeCollected == true)
         {
             //Debug.Log("Flower Collected!");
-            Script.PotFlowerCollected();
-            interactionBar.text = "";
             CanBeCollected = false;
             HasBeenCollected = true;
+            Script.PotFlowerCollected();
+            interactionBar.text = "";
         }
         if (playerInRange && Input.GetKey(KeyCode.E) && CanBeCollected == false && Time.time >= nextFireTime)
         {
 
-            progress += 5m;
+            progress += 15m;
 
             if (progress >= 100m)
             {

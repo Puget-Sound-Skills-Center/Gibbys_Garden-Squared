@@ -18,6 +18,7 @@ public class SculptureAI_Interaction : MonoBehaviour
 
     private SpriteRenderer sr;
 
+    public DialogueManagerStuff dialogueManagerStuff;
     public FlowerCollecting FlowerCollecting;
     public PlayerMovement PlayerMovement;
     public SculptureAI SculptureAI;
@@ -69,6 +70,7 @@ public class SculptureAI_Interaction : MonoBehaviour
             NotifText.text = "Constricted! Mash [Space] to break free! [" + StruggleProgress.ToString() + "%]";
             if (StruggleProgress == 100) // Player Has broken Free!!
             {
+                dialogueManagerStuff.CharacterTalk("Sculpture", "What fun! we should do that again sometime! :D");
                 Debug.Log("PLayer is set free");
                 countdown = 20f; // in seconds
                 NotifText.text = "";
@@ -86,6 +88,7 @@ public class SculptureAI_Interaction : MonoBehaviour
         if (other.transform.tag == "Player" && CanHugPlayer)
         {
             Debug.Log("Player Is Hugged!");
+            dialogueManagerStuff.CharacterTalk("SculptureAlt", "Gotcha! >:3");
             IsHuggingPlayer = true;
             StruggleProgress = 0;
             CanHugPlayer = false;

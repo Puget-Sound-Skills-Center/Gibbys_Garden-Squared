@@ -9,15 +9,16 @@ public class InteractableDialogue : MonoBehaviour
 
     public DialogueManagerStuff dialogueManagerStuff;
 
+    [SerializeField] private string Character;
     private bool PlayerInRange = false;
-
-
-
 
     private void Update()
     {
         if (PlayerInRange && Input.GetKeyDown(KeyCode.E)) {
-            dialogueManagerStuff.ShowDialogue();
+            if (Character == "Gibby")
+            {
+                dialogueManagerStuff.CharacterTalk("Gibby", "See those pots over there? Water and collect them for me, pretty please :3");
+            }
         }
     }
     private void OnTriggerEnter(Collider other)
