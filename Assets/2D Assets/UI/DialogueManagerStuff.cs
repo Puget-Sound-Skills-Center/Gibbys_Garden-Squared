@@ -53,7 +53,7 @@ public class DialogueManagerStuff : MonoBehaviour
             IconImage.sprite = SculptureIcon_Alt;
         }
 
-        Debug.Log($"{Who}, {Dialogue}");
+        //Debug.Log($"{Who}, {Dialogue}");
         DialogueText.text = Dialogue;
         ShowDialogue();
     }

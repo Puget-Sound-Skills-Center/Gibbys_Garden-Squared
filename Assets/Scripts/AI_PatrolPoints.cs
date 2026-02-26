@@ -19,7 +19,7 @@ public class AI_PatrolPoints : MonoBehaviour
 
     public Transform GetRandomPoint() {
         RandomIndex = Random.Range(0, Patrolpoints.Length);
-        Debug.Log(RandomIndex);
+        //Debug.Log(RandomIndex);
         return Patrolpoints[RandomIndex];
     }
 }
