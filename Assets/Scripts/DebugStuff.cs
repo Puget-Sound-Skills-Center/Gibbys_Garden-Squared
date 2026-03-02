@@ -28,7 +28,13 @@ public class DebugStuff : MonoBehaviour
         }
 
         // Everest Info stuff
-        Everest.text = $"Everest - AbilityMeter: {EverestAI.AllergyMeter}% / AbilityFactor: {EverestAI.AllergyFactor}% per second / Player in range: {EverestAI.PlayerInRange}";
+        Everest.text = $"Everest - AbilityMeter: {EverestAI.AllergyMeter}% / AbilityFactor: {EverestAI.AllergyFactor}% per second / Player in range: {EverestAI.PlayerInRange} / Buffer: {EverestAI.Buffer}";
+
+        // Milly Info stuff
+        Milly.text = $"Milly - Behavior: {MillyAI.Behavior} / Player in range: {MillyAI.PlayerInVicinity} / Player in Line of Sight: {MillyAI.PlayerInLineOfSight}";
+
+        // Kelvin Info stuff
+        Kelvin.text = $"Kelvin - Player in range: {KelvinAI.PlayerInVicinity} / Player in Line of Sight: {KelvinAI.PlayerInLineOfSight}";
     }
 
 }

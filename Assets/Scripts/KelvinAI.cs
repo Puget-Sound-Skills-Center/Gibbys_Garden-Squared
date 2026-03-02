@@ -12,6 +12,14 @@ public class KelvinAI : MonoBehaviour
     private bool TimerActive;
     private float countdown;
 
+    // Main Mechanic Variables
+    public bool PlayerInLineOfSight = false;
+    public bool PlayerInVicinity = false;
+
+    public bool OnCooldown = false; // Whether Kelvin can shoot his Ice raygun
+    public float CooldownTimer = 0f; // In seconds until Kelvin can shoot again
+
+
 
 
 

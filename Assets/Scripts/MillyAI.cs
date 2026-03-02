@@ -12,6 +12,10 @@ public class MillyAI : MonoBehaviour
     private bool TimerActive;
     private float countdown;
 
+    public bool PlayerInLineOfSight = false;
+    public bool PlayerInVicinity = false;
+    public string Behavior = "Patrol";
+
 
 
 
@@ -23,6 +27,9 @@ public class MillyAI : MonoBehaviour
 
     private void Update()
     {
+
+        // Milly moving script ----------------------------
+
        if (TimerActive == true)
         {
             countdown -= Time.deltaTime;
@@ -33,6 +40,10 @@ public class MillyAI : MonoBehaviour
             }
 
         }
+
+       // Milly main AI Mechanics -------------------------
+
+
     }
 
     public void MillyRelocate()
@@ -49,4 +60,6 @@ public class MillyAI : MonoBehaviour
         TimerActive = true;
        
     }
+
+    
 }

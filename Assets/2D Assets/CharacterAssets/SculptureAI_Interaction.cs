@@ -71,7 +71,7 @@ public class SculptureAI_Interaction : MonoBehaviour
             if (StruggleProgress == 100) // Player Has broken Free!!
             {
                 dialogueManagerStuff.CharacterTalk("Sculpture", "What fun! we should do that again sometime! :D");
-                Debug.Log("PLayer is set free");
+                //Debug.Log("PLayer is set free");
                 countdown = 20f; // in seconds
                 NotifText.text = "";
                 PlayerMovement.ThawPlayer();
@@ -87,7 +87,7 @@ public class SculptureAI_Interaction : MonoBehaviour
     {
         if (other.transform.tag == "Player" && CanHugPlayer)
         {
-            Debug.Log("Player Is Hugged!");
+            //Debug.Log("Player Is Hugged!");
             dialogueManagerStuff.CharacterTalk("SculptureAlt", "Gotcha! >:3");
             IsHuggingPlayer = true;
             StruggleProgress = 0;

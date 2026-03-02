@@ -17,8 +17,8 @@ public class EverestAI : MonoBehaviour
     public float AllergyMeter = 0; // Goes from 0% to 100%, affected by AllergyFactor
     public float AllergyFactor = 0; // Proportional to how many flowers the player have, maxes out at 7% per second
     public bool IceCooldown = false;
-    public float AbilityTimer = 0;
-    private float Buffer = 0;
+    public float AbilityTimer = 0; // Cooldown (in seconds) between frost ability
+    public float Buffer = 0; // Makes it so it fires event every second or less
     public bool PlayerInRange = false;
 
 
@@ -29,6 +29,8 @@ public class EverestAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         EverestRelocate();
         PlayerInRange = false;
+        AllergyFactor = 0;
+        AllergyMeter = 0;
 }
 
     private void Update()
@@ -46,21 +48,50 @@ public class EverestAI : MonoBehaviour
         }
 
         // MAIN MECHANIC --------------
-        AllergyFactor = FlowerCollecting.PottedFlower;
+        AllergyFactor = FlowerCollecting.PottedFlower; // Increase meter percentage depending on how many purple flowers were collected
+
+        if (PlayerInRange && IceCooldown == false)
+        {
+            Buffer += Time.unscaledDeltaTime;
+            if(Buffer >= 0.25f)
+            {
+                AllergyMeter += AllergyFactor;
+                if (AllergyMeter >= 100)
+                {
+                    Debug.Log("Everest used frozen ability!");
+                    AllergyMeter = 100;
+                    IceCooldown = true;
+                }
+                Buffer = 0f;
+            }
+        } else if (PlayerInRange == false && IceCooldown == false)
+        {
+            Buffer += Time.unscaledDeltaTime;
+            if (Buffer >= 1f)
+            {
+                AllergyMeter -= 1;
+                if (AllergyMeter <= 0)
+                {
+                    AllergyMeter = 0;
+                }
+                Buffer = 0f;
+            }
+        }
+
 
     }
 
-    private void OnCollisionEnter(Collision other) // Player gets near Everest
+    private void OnTriggerEnter(Collider other) // Player gets near Everest
     {
-        if(other.transform.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             PlayerInRange = true;
         }
     }
 
-    private void OnCollisionExit(Collision other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             PlayerInRange = false;
         }
