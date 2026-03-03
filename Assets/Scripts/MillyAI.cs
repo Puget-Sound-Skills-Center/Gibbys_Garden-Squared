@@ -22,7 +22,10 @@ public class MillyAI : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        MillyRelocate();
+        if (Behavior == "Patrol")
+        {
+            MillyRelocate();
+        }
     }
 
     private void Update()
@@ -30,15 +33,18 @@ public class MillyAI : MonoBehaviour
 
         // Milly moving script ----------------------------
 
-       if (TimerActive == true)
+        if (Behavior == "Patrol")
         {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0f) // Moves to another spot after timer is up
+            if (TimerActive == true)
             {
-                TimerActive = false;
-                MillyRelocate();
-            }
+                countdown -= Time.deltaTime;
+                if (countdown <= 0f) // Moves to another spot after timer is up
+                {
+                    TimerActive = false;
+                    MillyRelocate();
+                }
 
+            }
         }
 
        // Milly main AI Mechanics -------------------------

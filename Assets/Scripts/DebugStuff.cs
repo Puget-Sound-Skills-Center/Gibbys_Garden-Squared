@@ -32,9 +32,39 @@ public class DebugStuff : MonoBehaviour
 
         // Milly Info stuff
         Milly.text = $"Milly - Behavior: {MillyAI.Behavior} / Player in range: {MillyAI.PlayerInVicinity} / Player in Line of Sight: {MillyAI.PlayerInLineOfSight}";
+        
+        if (MillyAI.PlayerInVicinity)
+        {
+            if (MillyAI.PlayerInLineOfSight)
+            {
+                Milly.color = Color.red;
+            } else
+            {
+                Milly.color = new Color32(255, 205, 112, 255);
+            }
+        } else
+        {
+            Milly.color = Color.white;
+        }
 
         // Kelvin Info stuff
         Kelvin.text = $"Kelvin - Player in range: {KelvinAI.PlayerInVicinity} / Player in Line of Sight: {KelvinAI.PlayerInLineOfSight}";
+
+        if (KelvinAI.PlayerInVicinity)
+        {
+            if (KelvinAI.PlayerInLineOfSight)
+            {
+                Kelvin.color = Color.red;
+            }
+            else
+            {
+                Kelvin.color = new Color32(255, 205, 112, 255);
+            }
+        }
+        else
+        {
+            Kelvin.color = Color.white;
+        }
     }
 
 }

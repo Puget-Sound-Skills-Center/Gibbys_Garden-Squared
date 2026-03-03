@@ -66,7 +66,7 @@ public class SculptureAI_Interaction : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsHuggingPlayer) // Space to break free
         {
             //Debug.Log("Breaking Free");
-            StruggleProgress += 10;
+            StruggleProgress += 20;
             NotifText.text = "Constricted! Mash [Space] to break free! [" + StruggleProgress.ToString() + "%]";
             if (StruggleProgress == 100) // Player Has broken Free!!
             {
