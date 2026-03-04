@@ -16,6 +16,10 @@ public class DialogueManagerStuff : MonoBehaviour
     public Sprite GibbyIcon;
     public Sprite SculptureIcon;
     public Sprite SculptureIcon_Alt;
+    // Milly Sprites
+    public Sprite MillyW1;
+    public Sprite MillyW2;
+    public Sprite MillyW3;
 
     private void Update()
     {
@@ -51,6 +55,19 @@ public class DialogueManagerStuff : MonoBehaviour
         if (Who == "SculptureAlt")
         {
             IconImage.sprite = SculptureIcon_Alt;
+        }
+        // Milly Stuff for organization
+        if (Who == "MillyW1")
+        {
+            IconImage.sprite = MillyW1;
+        }
+        if (Who == "MillyW2")
+        {
+            IconImage.sprite = MillyW2;
+        }
+        if (Who == "MillyW3")
+        {
+            IconImage.sprite = MillyW3;
         }
 
         //Debug.Log($"{Who}, {Dialogue}");

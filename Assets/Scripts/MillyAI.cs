@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class MillyAI : MonoBehaviour
 {
+    public PlayerMovement PlayerMovement;
+    public Transform Player;
+    public DialogueManagerStuff DialogueManagerStuff;
 
     public NavMeshAgent agent;
     public AI_PatrolPoints AI_PatrolPoints;
@@ -14,7 +17,14 @@ public class MillyAI : MonoBehaviour
 
     public bool PlayerInLineOfSight = false;
     public bool PlayerInVicinity = false;
+
+    // Main Mechanic Variables
     public string Behavior = "Patrol";
+    public int PatrolSpeed = 15;
+    public int DetainSpeed = 30;
+    public float forgiveness = 0f; // Increases when not sprinting, default 30 seconds if not seen sprinting she takes away 1 warning from you
+    public float WarnBuffer = 0f; // Increases when sprinting on her zone
+    public float WarnCooldown = 0f; // Cooldown per warn
 
 
 
@@ -35,6 +45,7 @@ public class MillyAI : MonoBehaviour
 
         if (Behavior == "Patrol")
         {
+            agent.speed = PatrolSpeed;
             if (TimerActive == true)
             {
                 countdown -= Time.deltaTime;
@@ -45,11 +56,41 @@ public class MillyAI : MonoBehaviour
                 }
 
             }
+        } else if (Behavior == "Detain")
+        {
+            agent.speed = DetainSpeed;
+            agent.destination = Player.position;
         }
 
-       // Milly main AI Mechanics -------------------------
+        // Milly main AI Mechanics -------------------------
+
+        // Buffer for Warns 
+        if (WarnCooldown > 0f)
+        {
+            WarnCooldown -= Time.deltaTime;
+            if (WarnCooldown < 0f)
+            {
+                WarnCooldown = 0f;
+            }
+        }
 
 
+       // checks if player is sprinting while in the line of sight of Milly
+       if (PlayerInLineOfSight && PlayerMovement.IsSprinting && WarnCooldown == 0 && Behavior == "Patrol")
+        {
+          WarnBuffer += .01f;
+          if (WarnBuffer > .2f)
+            {
+                WarnPlayer();
+            }
+        } else
+        {
+            WarnBuffer -= .005f;
+            if (WarnBuffer < 0f)
+            {
+                WarnBuffer = 0f;
+            }
+        }
     }
 
     public void MillyRelocate()
@@ -67,5 +108,36 @@ public class MillyAI : MonoBehaviour
        
     }
 
-    
+    public void WarnPlayer()
+    {
+        WarnCooldown = 1f;
+        WarnBuffer = 0f;
+        PlayerMovement.Warns++;
+        // Stages of Warn
+        if (PlayerMovement.Warns == 3)
+        {
+            DialogueManagerStuff.CharacterTalk("MillyW3", "For the last time, no running!");
+            Behavior = "Detain";
+        }
+        else if (PlayerMovement.Warns == 2)
+        {
+            DialogueManagerStuff.CharacterTalk("MillyW2", "You're going to detention if you keep running, final warning...");
+        }
+        else if (PlayerMovement.Warns == 1)
+        {
+            DialogueManagerStuff.CharacterTalk("MillyW1", "Hey slow down there! Don't want ya getting hurt >w>'");
+        }
+
+
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && Behavior == "Detain")
+        {
+            PlayerMovement.SendToDetention();
+            transform.position = new Vector3(0f, 1.08f, 3f);
+            Behavior = "Patrol";
+        }
+    }
 }

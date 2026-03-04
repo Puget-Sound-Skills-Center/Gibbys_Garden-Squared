@@ -16,11 +16,20 @@ public class PlayerMovement : MonoBehaviour
     public float crouchHeight = 1f;
     public float crouchSpeed = 3f;
 
+    [SerializeField] private Transform PlayerModel;
+
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
 
     private bool canMove = true;
+
+    // Status Effects and whatnot -------------
+    public bool IsSprinting = false; // Used by player, checked by Milly
+    public int Warns = 0; // Used by Milly, 3 strikes and you're out!
+    public bool Chilled = false; // Used by Everest and Kelvin
+    public bool InDetention = false; // Used by Milly
+    public bool IsInOffice = false; // Used by Milly and Player
 
     void Start()
     {
@@ -35,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        IsSprinting = isRunning;
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
@@ -87,5 +97,12 @@ public class PlayerMovement : MonoBehaviour
     public void ThawPlayer()
     {
         canMove = true;
+    }
+
+    public void SendToDetention()
+    {
+        Debug.Log("Send player to office");
+        PlayerModel.transform.position = new Vector3(0f, 1.08f, 0f);
+
     }
 }
