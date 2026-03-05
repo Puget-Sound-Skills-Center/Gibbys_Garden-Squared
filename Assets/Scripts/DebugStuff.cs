@@ -69,7 +69,7 @@ public class DebugStuff : MonoBehaviour
         }
 
         // Player Info stuff ---------------------------------
-        Player.text = $"Player - Sprinting: {PlayerMovement.IsSprinting} / Milly Warnings: {PlayerMovement.Warns}";
+        Player.text = $"Player - Sprinting: {PlayerMovement.IsSprinting} / Milly Warnings: {PlayerMovement.Warns} / In Office: {PlayerMovement.IsInOffice} / In Detention: {PlayerMovement.InDetention}";
     }
 
 }

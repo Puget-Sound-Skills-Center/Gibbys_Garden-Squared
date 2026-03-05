@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -24,12 +25,19 @@ public class PlayerMovement : MonoBehaviour
 
     private bool canMove = true;
 
+    public TextMeshProUGUI NotifText;
+
+    // Teleport stuff?
+    private CharacterController cc;
+
     // Status Effects and whatnot -------------
     public bool IsSprinting = false; // Used by player, checked by Milly
     public int Warns = 0; // Used by Milly, 3 strikes and you're out!
     public bool Chilled = false; // Used by Everest and Kelvin
     public bool InDetention = false; // Used by Milly
-    public bool IsInOffice = false; // Used by Milly and Player
+    public bool IsInOffice = true; // Used by Milly and Player, true by default as player spawns in the office
+    public int DetentionTimer = 0;
+    public float Detentionbuffer = 1f;
 
     void Start()
     {
@@ -38,13 +46,25 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
     }
 
+    private void Awake()
+    {
+        cc = GetComponent<CharacterController>();
+    }
+
+
     void Update()
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        IsSprinting = isRunning;
+        if (canMove)
+        {
+            IsSprinting = isRunning;
+        } else
+        {
+            IsSprinting = false;
+        }
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
@@ -87,6 +107,33 @@ public class PlayerMovement : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+
+        // Debug Teleport
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SendToDetention();
+        }
+
+        // Detention Mechanic
+
+        if (InDetention)
+        {
+            Detentionbuffer -= Time.deltaTime;
+            if (Detentionbuffer < 0)
+            {
+                DetentionTimer--;
+                NotifText.text = $"You're in detention for {DetentionTimer} seconds!";
+                if (DetentionTimer == 0)
+                {
+                    InDetention = false;
+                    NotifText.text = "";
+                } else
+                {
+                    Detentionbuffer = 1f;
+                }
+            }
+        }
+
     }
 
     public void FreezePlayer()
@@ -101,8 +148,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void SendToDetention()
     {
-        Debug.Log("Send player to office");
-        PlayerModel.transform.position = new Vector3(0f, 1.08f, 0f);
-
+        //Debug.Log("Send player to office");
+        bool wasEnabled = cc.enabled;
+        cc.enabled = false;
+        transform.position = new Vector3(0f, 1.08f, 0f);
+        cc.enabled = true;
+        // Post stuff
+        DetentionTimer = 15;
+        NotifText.text = $"You're in detention for {DetentionTimer} seconds!";
     }
 }

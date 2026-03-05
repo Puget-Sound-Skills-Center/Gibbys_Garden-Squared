@@ -21,7 +21,7 @@ public class MillyAI : MonoBehaviour
     // Main Mechanic Variables
     public string Behavior = "Patrol";
     public int PatrolSpeed = 15;
-    public int DetainSpeed = 30;
+    public int DetainSpeed = 40;
     public float forgiveness = 0f; // Increases when not sprinting, default 30 seconds if not seen sprinting she takes away 1 warning from you
     public float WarnBuffer = 0f; // Increases when sprinting on her zone
     public float WarnCooldown = 0f; // Cooldown per warn
@@ -58,8 +58,19 @@ public class MillyAI : MonoBehaviour
             }
         } else if (Behavior == "Detain")
         {
+            TimerActive = false;
             agent.speed = DetainSpeed;
             agent.destination = Player.position;
+        } else if (Behavior == "Stall")
+        {
+            transform.position = new Vector3(0f, 2.542645f, 6f);
+            agent.destination = new Vector3(0f, 2.542645f, 6f);
+            if (WarnCooldown < 2)
+            {
+                agent.destination = new Vector3(0f, 2.542645f, 6f);
+                Behavior = "Patrol";
+                MillyRelocate();
+            }
         }
 
         // Milly main AI Mechanics -------------------------
@@ -76,12 +87,20 @@ public class MillyAI : MonoBehaviour
 
 
        // checks if player is sprinting while in the line of sight of Milly
-       if (PlayerInLineOfSight && PlayerMovement.IsSprinting && WarnCooldown == 0 && Behavior == "Patrol")
+       if (PlayerInLineOfSight && WarnCooldown == 0 && Behavior == "Patrol")
         {
-          WarnBuffer += .01f;
-          if (WarnBuffer > .2f)
+            if (PlayerMovement.InDetention && PlayerMovement.IsInOffice == false)
             {
-                WarnPlayer();
+                DialogueManagerStuff.CharacterTalk("MillyW3", "You should be in detention still!");
+                Behavior = "Detain";
+            }
+            if (PlayerMovement.IsSprinting)
+            {
+                WarnBuffer += .01f;
+                if (WarnBuffer > .2f)
+                {
+                    WarnPlayer();
+                }
             }
         } else
         {
@@ -118,6 +137,8 @@ public class MillyAI : MonoBehaviour
         {
             DialogueManagerStuff.CharacterTalk("MillyW3", "For the last time, no running!");
             Behavior = "Detain";
+            PlayerMovement.Warns = 0;
+            WarnCooldown = 99f;
         }
         else if (PlayerMovement.Warns == 2)
         {
@@ -135,9 +156,11 @@ public class MillyAI : MonoBehaviour
     {
         if (other.CompareTag("Player") && Behavior == "Detain")
         {
+            PlayerMovement.InDetention = true;
             PlayerMovement.SendToDetention();
-            transform.position = new Vector3(0f, 1.08f, 3f);
-            Behavior = "Patrol";
+            DialogueManagerStuff.CharacterTalk("MillyW3", "You should know better...");
+            Behavior = "Stall";
+            WarnCooldown = 5f;
         }
     }
 }
