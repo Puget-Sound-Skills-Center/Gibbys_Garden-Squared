@@ -50,7 +50,7 @@ public class DebugStuff : MonoBehaviour
         }
 
         // Kelvin Info stuff ---------------------------------
-        Kelvin.text = $"Kelvin - Player in range: {KelvinAI.PlayerInVicinity} / Player in Line of Sight: {KelvinAI.PlayerInLineOfSight}";
+        Kelvin.text = $"Kelvin - Player In Line of Sight: {KelvinAI.PlayerInLineOfSight} / Frost Meter: {KelvinAI.FrostCharge}% / On Cooldown: {KelvinAI.OnCooldown} / Mode: {KelvinAI.Mode}";
 
         if (KelvinAI.PlayerInVicinity)
         {
@@ -69,7 +69,7 @@ public class DebugStuff : MonoBehaviour
         }
 
         // Player Info stuff ---------------------------------
-        Player.text = $"Player - Sprinting: {PlayerMovement.IsSprinting} / Milly Warnings: {PlayerMovement.Warns} / In Office: {PlayerMovement.IsInOffice} / In Detention: {PlayerMovement.InDetention}";
+        Player.text = $"Player - Sprinting: {PlayerMovement.SprintMoving} / Milly Warnings: {PlayerMovement.Warns} / In Office: {PlayerMovement.IsInOffice} / In Detention: {PlayerMovement.InDetention} / Chilled: {PlayerMovement.Chilled}";
     }
 
 }

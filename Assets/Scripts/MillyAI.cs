@@ -94,10 +94,10 @@ public class MillyAI : MonoBehaviour
                 DialogueManagerStuff.CharacterTalk("MillyW3", "You should be in detention still!");
                 Behavior = "Detain";
             }
-            if (PlayerMovement.IsSprinting)
+            if (PlayerMovement.SprintMoving)
             {
                 WarnBuffer += .01f;
-                if (WarnBuffer > .2f)
+                if (WarnBuffer > .5f && PlayerMovement.InDetention == false)
                 {
                     WarnPlayer();
                 }
@@ -161,6 +161,8 @@ public class MillyAI : MonoBehaviour
             DialogueManagerStuff.CharacterTalk("MillyW3", "You should know better...");
             Behavior = "Stall";
             WarnCooldown = 5f;
+            transform.position = new Vector3(0f, 2.542645f, 6f);
+            agent.destination = new Vector3(0f, 2.542645f, 6f);
         }
     }
 }

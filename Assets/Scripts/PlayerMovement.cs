@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,14 +25,24 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
 
     private bool canMove = true;
+    //private bool PressedShift = false;
+
+
+    public bool SprintMoving = false;
+    private bool StaminaLock = false;
 
     public TextMeshProUGUI NotifText;
+    public TextMeshProUGUI StaminaBar;
 
     // Teleport stuff?
     private CharacterController cc;
 
     // Status Effects and whatnot -------------
-    public bool IsSprinting = false; // Used by player, checked by Milly
+    public bool isRunning = false; // Used by player, checked by Milly
+    public int Stamina = 100;
+    public float DrainBuffer = 0f; // How long it will take to decrease stamina by 1
+    public float RegenBuffer = 0f;
+    public float RegenIncrement = 0f;
     public int Warns = 0; // Used by Milly, 3 strikes and you're out!
     public bool Chilled = false; // Used by Everest and Kelvin
     public bool InDetention = false; // Used by Milly
@@ -57,14 +68,83 @@ public class PlayerMovement : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        if (canMove)
+        // Sprint Mechanic 
+        //bool isRunning = Input.GetKey(KeyCode.LeftShift);
+
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+
+        // Checks if player is sprint moving
+        if ((h != 0 || v != 0) && Input.GetKey(KeyCode.LeftShift) && Stamina > 0)
         {
-            IsSprinting = isRunning;
+            SprintMoving = true;
         } else
         {
-            IsSprinting = false;
+            SprintMoving = false;
         }
+
+
+        // Stamina regen buffs when not moving
+        if ((h != 0 || v != 0))
+        {
+            RegenIncrement = .2f;
+        }
+        else
+        {
+            RegenIncrement = .07f;
+        }
+
+
+        // Stamina Drain
+        if (SprintMoving && StaminaLock == false)
+        {
+            isRunning = true;
+            DrainBuffer += Time.deltaTime;
+            if (DrainBuffer > .1f)
+            {
+                Stamina--;
+                if (Stamina == 0)
+                {
+                    StaminaLock = true;
+                    if (Chilled)
+                    {
+                        StaminaBar.color = new Color32(154, 141, 239, 255);
+                    } else
+                    {
+                        StaminaBar.color = new Color32(255, 133, 143, 255);
+                    }
+                }
+                StaminaBar.text = $"Stamina: {Stamina}%";
+                DrainBuffer = 0f;
+            }
+        } else
+        {
+            isRunning = false;
+            RegenBuffer += Time.deltaTime;
+            if (RegenBuffer > RegenIncrement)
+            {
+                Stamina++;
+                if (Stamina > 100)
+                {
+                    Stamina = 100;
+                } else if (Stamina == 25)
+                {
+                    StaminaLock = false;
+                    if (Chilled)
+                    {
+                        StaminaBar.color = new Color32(178, 230, 255, 255);
+                    }
+                    else
+                    {
+                        StaminaBar.color = Color.white;
+                    }
+                }
+                    StaminaBar.text = $"Stamina: {Stamina}%";
+                RegenBuffer = 0f;
+            }
+        }
+
+        // -------------------
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
@@ -156,5 +236,10 @@ public class PlayerMovement : MonoBehaviour
         // Post stuff
         DetentionTimer = 15;
         NotifText.text = $"You're in detention for {DetentionTimer} seconds!";
+    }
+
+    public void ChillPlayer()
+    {
+        Chilled = true;
     }
 }

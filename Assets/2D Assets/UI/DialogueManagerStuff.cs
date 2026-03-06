@@ -20,6 +20,11 @@ public class DialogueManagerStuff : MonoBehaviour
     public Sprite MillyW1;
     public Sprite MillyW2;
     public Sprite MillyW3;
+    // Kelvin Sprites
+    public Sprite KelvinSpotted;
+    public Sprite KelvinSuccess;
+    public Sprite KelvinCaught;
+    public Sprite KelvinBummed;
 
     private void Update()
     {
@@ -68,6 +73,23 @@ public class DialogueManagerStuff : MonoBehaviour
         if (Who == "MillyW3")
         {
             IconImage.sprite = MillyW3;
+        }
+        // Kelvin Stuff for organization
+        if (Who == "KelvinSpotted")
+        {
+            IconImage.sprite = KelvinSpotted;
+        }
+        if (Who == "KelvinSuccess")
+        {
+            IconImage.sprite = KelvinSuccess;
+        }
+        if (Who == "KelvinCaught")
+        {
+            IconImage.sprite = KelvinCaught;
+        }
+        if (Who == "KelvinBummed")
+        {
+            IconImage.sprite = KelvinBummed;
         }
 
         //Debug.Log($"{Who}, {Dialogue}");
