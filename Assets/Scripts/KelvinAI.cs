@@ -77,7 +77,7 @@ public class KelvinAI : MonoBehaviour
         Observing = PlayerInLineOfSight;
 
         // Kelvin Main Mechanic
-        if (OnCooldown == false && Observing && Engaged == true)
+        if (OnCooldown == false && Observing && Engaged == true && PlayerMovement.IsInOffice == false)
         {
             if (PlayerInLineOfSight)
             {
@@ -88,7 +88,7 @@ public class KelvinAI : MonoBehaviour
                 }
                 else if (FrostCharge > 3f)
                 {
-                    DialogueManagerStuff.CharacterTalk("KelvinSpotted", "*Shoots you with epic ice raygun*");
+                    DialogueManagerStuff.CharacterTalk("KelvinSuccess", "Heheh! Must be cold for you, hah!");
 
 
                     // Chill player 

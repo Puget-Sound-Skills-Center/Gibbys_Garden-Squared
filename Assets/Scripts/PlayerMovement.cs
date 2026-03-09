@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public float crouchSpeed = 3f;
 
     [SerializeField] private Transform PlayerModel;
+    [SerializeField] private CanvasGroup ChilledManager;
 
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
@@ -45,10 +46,12 @@ public class PlayerMovement : MonoBehaviour
     public float RegenIncrement = 0f;
     public int Warns = 0; // Used by Milly, 3 strikes and you're out!
     public bool Chilled = false; // Used by Everest and Kelvin
+    public float ChillTimer = 0f;
     public bool InDetention = false; // Used by Milly
     public bool IsInOffice = true; // Used by Milly and Player, true by default as player spawns in the office
     public int DetentionTimer = 0;
     public float Detentionbuffer = 1f;
+    public int SlowModifier = 0; // Chilled debuff reduces speed by 5 for both walk and run 
 
     void Start()
     {
@@ -65,6 +68,18 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // Set Walkspeed
+        if (Chilled)
+        {
+            SlowModifier = 5;
+        } else
+        {
+            SlowModifier = 0;
+        }
+        walkSpeed = 6f - SlowModifier;
+        runSpeed = 12f - SlowModifier;
+
+
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -75,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
 
         // Checks if player is sprint moving
-        if ((h != 0 || v != 0) && Input.GetKey(KeyCode.LeftShift) && Stamina > 0)
+        if ((h != 0 || v != 0) && Input.GetKey(KeyCode.LeftShift) && Stamina > 0 && Chilled == false)
         {
             SprintMoving = true;
         } else
@@ -91,12 +106,12 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            RegenIncrement = .07f;
+            RegenIncrement = .03f;
         }
 
 
         // Stamina Drain
-        if (SprintMoving && StaminaLock == false)
+        if (SprintMoving && StaminaLock == false && Chilled == false)
         {
             isRunning = true;
             DrainBuffer += Time.deltaTime;
@@ -106,13 +121,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Stamina == 0)
                 {
                     StaminaLock = true;
-                    if (Chilled)
-                    {
-                        StaminaBar.color = new Color32(154, 141, 239, 255);
-                    } else
-                    {
-                        StaminaBar.color = new Color32(255, 133, 143, 255);
-                    }
+                    StaminaBar.color = new Color32(255, 133, 143, 255);
                 }
                 StaminaBar.text = $"Stamina: {Stamina}%";
                 DrainBuffer = 0f;
@@ -130,22 +139,32 @@ public class PlayerMovement : MonoBehaviour
                 } else if (Stamina == 25)
                 {
                     StaminaLock = false;
-                    if (Chilled)
-                    {
-                        StaminaBar.color = new Color32(178, 230, 255, 255);
-                    }
-                    else
-                    {
-                        StaminaBar.color = Color.white;
-                    }
+                    StaminaBar.color = Color.white;
                 }
                     StaminaBar.text = $"Stamina: {Stamina}%";
                 RegenBuffer = 0f;
             }
         }
 
-        // -------------------
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
+        // Chill Effect thingy
+        if (ChillTimer > 0f)
+        {
+            ChillTimer -= Time.deltaTime;
+            if (ChillTimer <= 0f)
+            {
+                Chilled = false;
+            }
+        }
+        if (Chilled)
+        {
+            ChilledManager.alpha = 0.73f;
+        } else
+        {
+            ChilledManager.alpha = 0;
+        }
+
+            // -------------------
+            float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
@@ -241,5 +260,6 @@ public class PlayerMovement : MonoBehaviour
     public void ChillPlayer()
     {
         Chilled = true;
+        ChillTimer = 7f;
     }
 }

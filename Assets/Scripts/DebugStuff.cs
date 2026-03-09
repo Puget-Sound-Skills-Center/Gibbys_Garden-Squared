@@ -69,7 +69,7 @@ public class DebugStuff : MonoBehaviour
         }
 
         // Player Info stuff ---------------------------------
-        Player.text = $"Player - Sprinting: {PlayerMovement.SprintMoving} / Milly Warnings: {PlayerMovement.Warns} / In Office: {PlayerMovement.IsInOffice} / In Detention: {PlayerMovement.InDetention} / Chilled: {PlayerMovement.Chilled}";
+        Player.text = $"Player - Sprinting: {PlayerMovement.SprintMoving} / Milly Warnings: {PlayerMovement.Warns} / In Office: {PlayerMovement.IsInOffice} / In Detention: {PlayerMovement.InDetention} / Chilled: {PlayerMovement.Chilled} ({PlayerMovement.ChillTimer})";
     }
 
 }
