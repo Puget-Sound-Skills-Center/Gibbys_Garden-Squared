@@ -12,6 +12,7 @@ public class SculptureAI : MonoBehaviour
 
     public SculptureAI_Interaction SculptureAI_Interaction;
     public bool IsLookedAt = false;
+    public float buffer = 0f;
 
     void Start()
     {
@@ -23,6 +24,12 @@ public class SculptureAI : MonoBehaviour
     {
         if(CanMove())
         {
+            buffer += Time.deltaTime;
+            if (buffer > .1f)
+            {
+                SculptureAI_Interaction.PlayFootStep();
+                buffer = 0;
+            }
             agent.destination = player.position;
             IsLookedAt = false;
         } else

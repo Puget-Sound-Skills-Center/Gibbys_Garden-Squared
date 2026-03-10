@@ -12,6 +12,10 @@ public class SculptureAI_Interaction : MonoBehaviour
     public bool InactiveTimer = false;
     public float countdown = 0f;
 
+    public AudioSource Source;
+    public AudioClip Footstep;
+    public AudioClip Caught;
+
     public Sprite Active;
     public Sprite Inactive;
 
@@ -72,7 +76,7 @@ public class SculptureAI_Interaction : MonoBehaviour
             {
                 dialogueManagerStuff.CharacterTalk("Sculpture", "What fun! we should do that again sometime! :D");
                 //Debug.Log("PLayer is set free");
-                countdown = 60f; // in seconds
+                countdown = 5f; // in seconds
                 NotifText.text = "";
                 PlayerMovement.ThawPlayer();
                 SculptureIsActive = false;
@@ -88,6 +92,8 @@ public class SculptureAI_Interaction : MonoBehaviour
         if (other.transform.tag == "Player" && CanHugPlayer)
         {
             //Debug.Log("Player Is Hugged!");
+            Source.pitch = 1;
+            Source.PlayOneShot(Caught);
             dialogueManagerStuff.CharacterTalk("SculptureAlt", "Gotcha! >:3");
             IsHuggingPlayer = true;
             StruggleProgress = 0;
@@ -100,5 +106,11 @@ public class SculptureAI_Interaction : MonoBehaviour
     public void ActivateSculpture()
     {
         SculptureIsActive = true;
+    }
+
+    public void PlayFootStep()
+    {
+        Source.pitch = Random.Range(0.9f, 1.1f);
+        Source.PlayOneShot(Footstep);
     }
 }

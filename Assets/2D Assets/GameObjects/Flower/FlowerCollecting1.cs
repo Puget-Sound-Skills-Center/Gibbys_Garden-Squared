@@ -1,6 +1,7 @@
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 public class FlowerCollecting : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class FlowerCollecting : MonoBehaviour
 
     public int PottedFlower = 0;
     private int PottedFlowerQuota = 7;
+
+    public AudioSource Speaker;
+    public AudioClip CollectSFX;
 
 
     public TextMeshProUGUI FlowerText;
@@ -31,6 +35,11 @@ public class FlowerCollecting : MonoBehaviour
     {
         if(other.transform.tag == "Flower")
         {
+
+            Speaker.pitch = Random.Range(0.95f, 1.05f);
+            Speaker.PlayOneShot(CollectSFX);
+
+
             Flower++;
             FlowerText.text = Flower.ToString() + "/" + FlowerQuota.ToString();
             //Debug.Log(Flower);

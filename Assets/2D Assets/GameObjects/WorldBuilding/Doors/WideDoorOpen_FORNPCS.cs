@@ -11,6 +11,8 @@ public class WideDoorOpen_FORNPCS : MonoBehaviour
     [Header("Filter")]
     public string NPCTag = "NPC";
 
+    public AudioSource Source;
+    public AudioClip OpenSound;
 
     private SpriteRenderer sr;
     private int touchingCount;
@@ -28,7 +30,11 @@ public class WideDoorOpen_FORNPCS : MonoBehaviour
 
 
         touchingCount++;
-        if (DoorOpen != null) sr.sprite = DoorOpen;
+        if (DoorOpen != null)
+        {
+            sr.sprite = DoorOpen;
+            Source.PlayOneShot(OpenSound);
+        }
     }
 
     private void OnTriggerExit(Collider other)

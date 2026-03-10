@@ -12,6 +12,9 @@ public class SingleDoorOpen : MonoBehaviour
     public string playerTag = "Player";
     public string NPCTag = "NPC";
 
+    public AudioSource Source;
+    public AudioClip OpenSound;
+    public AudioClip CloseSound;
 
     private SpriteRenderer sr;
     private int touchingCount;
@@ -29,7 +32,11 @@ public class SingleDoorOpen : MonoBehaviour
 
 
         touchingCount++;
-        if (DoorOpen != null) sr.sprite = DoorOpen;
+        if (DoorOpen != null)
+        {
+            sr.sprite = DoorOpen;
+            Source.PlayOneShot(OpenSound);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -40,7 +47,10 @@ public class SingleDoorOpen : MonoBehaviour
 
         touchingCount = Mathf.Max(0, touchingCount - 1);
         if (touchingCount == 0 && DoorClosed != null)
+        {
+            Source.PlayOneShot(CloseSound);
             sr.sprite = DoorClosed;
+        }
     }
 
 }

@@ -18,6 +18,13 @@ public class MillyAI : MonoBehaviour
     public bool PlayerInLineOfSight = false;
     public bool PlayerInVicinity = false;
 
+    // Sounds
+    [Header("Audios")]
+    public AudioSource Speaker;
+    public AudioClip MillyW1;
+    public AudioClip MillyW2;
+    public AudioClip MillyW3;
+
     // Main Mechanic Variables
     public string Behavior = "Patrol";
     public int PatrolSpeed = 15;
@@ -92,6 +99,7 @@ public class MillyAI : MonoBehaviour
             if (PlayerMovement.InDetention && PlayerMovement.IsInOffice == false)
             {
                 DialogueManagerStuff.CharacterTalk("MillyW3", "You should be in detention still!");
+                Speaker.PlayOneShot(MillyW3);
                 Behavior = "Detain";
             }
             if (PlayerMovement.SprintMoving)
@@ -129,13 +137,14 @@ public class MillyAI : MonoBehaviour
 
     public void WarnPlayer()
     {
-        WarnCooldown = 1f;
+        WarnCooldown = 3f;
         WarnBuffer = 0f;
         PlayerMovement.Warns++;
         // Stages of Warn
         if (PlayerMovement.Warns == 3)
         {
             DialogueManagerStuff.CharacterTalk("MillyW3", "For the last time, no running!");
+            Speaker.PlayOneShot(MillyW3);
             Behavior = "Detain";
             PlayerMovement.Warns = 0;
             WarnCooldown = 99f;
@@ -143,10 +152,12 @@ public class MillyAI : MonoBehaviour
         else if (PlayerMovement.Warns == 2)
         {
             DialogueManagerStuff.CharacterTalk("MillyW2", "You're going to detention if you keep running, final warning...");
+            Speaker.PlayOneShot(MillyW2);
         }
         else if (PlayerMovement.Warns == 1)
         {
             DialogueManagerStuff.CharacterTalk("MillyW1", "Hey slow down there! Don't want ya getting hurt >w>'");
+            Speaker.PlayOneShot(MillyW1);
         }
 
 

@@ -11,6 +11,8 @@ public class WideDoorOpen : MonoBehaviour
     [Header("Filter")]
     public string playerTag = "Player";
 
+    public AudioSource Source;
+    public AudioClip OpenSound;
 
     private SpriteRenderer sr;
     private int touchingCount;
@@ -27,7 +29,11 @@ public class WideDoorOpen : MonoBehaviour
             return;
 
         touchingCount++;
-        if (DoorOpen != null) sr.sprite = DoorOpen;
+        if (DoorOpen != null)
+        {
+            sr.sprite = DoorOpen;
+            Source.PlayOneShot(OpenSound);
+        }
     }
 
     private void OnTriggerExit(Collider other)
