@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     public float crouchHeight = 1f;
     public float crouchSpeed = 3f;
 
+    [SerializeField] private CanvasGroup DebugMenu;
+    [SerializeField] private CanvasGroup PauseMenu;
     [SerializeField] private Transform PlayerModel;
     [SerializeField] private CanvasGroup ChilledManager;
 
@@ -68,6 +70,38 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // Debug stuff
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if(DebugMenu.alpha == 0)
+            {
+                DebugMenu.alpha = .67f;
+            } else
+            {
+                DebugMenu.alpha = 0;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (PauseMenu.alpha == 0)
+            {
+                // Game pauses
+                Time.timeScale = 0f;
+                PauseMenu.alpha = .8f;
+                FreezePlayer();
+            }
+            else
+            {
+                // Game resumes
+                PauseMenu.alpha = 0;
+                Time.timeScale = 1f;
+                ThawPlayer();
+            }
+        }
+
+
+
         // Set Walkspeed
         if (Chilled)
         {

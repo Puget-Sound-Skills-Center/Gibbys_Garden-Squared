@@ -25,7 +25,7 @@ public class SculptureAI : MonoBehaviour
         if(CanMove())
         {
             buffer += Time.deltaTime;
-            if (buffer > .1f)
+            if (buffer > .11f)
             {
                 SculptureAI_Interaction.PlayFootStep();
                 buffer = 0;

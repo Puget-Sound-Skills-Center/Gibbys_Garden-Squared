@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class KelvinAI : MonoBehaviour
 {
@@ -10,6 +11,16 @@ public class KelvinAI : MonoBehaviour
     public AI_PatrolPoints AI_PatrolPoints;
     public PlayerMovement PlayerMovement;
     public DialogueManagerStuff DialogueManagerStuff;
+    [SerializeField] private CanvasGroup SpotMechanic;
+    public Image SpotImage;
+    public Sprite Spotted;
+    public Sprite Lost;
+
+    public AudioSource Source;
+    public AudioClip KelvinSpotted;
+    public AudioClip KelvinLost;
+    public AudioClip KelvinShot;
+    public AudioClip KelvinRayGun;
 
     private bool TimerActive;
     private float countdown;
@@ -71,10 +82,23 @@ public class KelvinAI : MonoBehaviour
             Mode = "Engaged";
             agent.destination = transform.position;
             Engaged = true;
-            FrostCharge = 0f;
+            FrostCharge = 1f;
+            Source.PlayOneShot(KelvinSpotted);
         }
 
         Observing = PlayerInLineOfSight;
+
+        // SpotMechanic Changing Images
+        if(SpotMechanic.alpha == 1)
+        {
+            if(PlayerInLineOfSight)
+            {
+                SpotImage.sprite = Spotted;
+            } else
+            {
+                SpotImage.sprite = Lost;
+            }
+        }
 
         // Kelvin Main Mechanic
         if (OnCooldown == false && Observing && Engaged == true && PlayerMovement.IsInOffice == false)
@@ -82,15 +106,18 @@ public class KelvinAI : MonoBehaviour
             if (PlayerInLineOfSight)
             {
                 FrostCharge += Time.deltaTime;
-                if (FrostCharge < .1f)
+                if (FrostCharge < 1.05f)
                 {
+                    SpotMechanic.alpha = 1;
                     DialogueManagerStuff.CharacterTalk("KelvinSpotted", "Sights on you, human! Hold still!");
                 }
                 else if (FrostCharge > 3f)
                 {
                     DialogueManagerStuff.CharacterTalk("KelvinSuccess", "Heheh! Must be cold for you, hah!");
 
-
+                    Source.PlayOneShot(KelvinRayGun);
+                    Source.PlayOneShot(KelvinShot);
+                    SpotMechanic.alpha = 0;
                     // Chill player 
                     PlayerMovement.ChillPlayer();
 
@@ -105,9 +132,11 @@ public class KelvinAI : MonoBehaviour
         {
 
             FrostCharge -= Time.deltaTime;
-            if (FrostCharge < -.3f)
+            if (FrostCharge < 0)
                 {
                     DialogueManagerStuff.CharacterTalk("KelvinBummed", "You're no fun.");
+                    Source.PlayOneShot(KelvinLost);
+                    SpotMechanic.alpha = 0;
                     Engaged = false;
                     OnCooldown = true;
                     CooldownTimer = 20f;

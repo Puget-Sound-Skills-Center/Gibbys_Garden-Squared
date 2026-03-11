@@ -14,6 +14,7 @@ public class FlowerCollecting : MonoBehaviour
 
     public AudioSource Speaker;
     public AudioClip CollectSFX;
+    public AudioClip ScissorCut;
 
 
     public TextMeshProUGUI FlowerText;
@@ -55,7 +56,7 @@ public class FlowerCollecting : MonoBehaviour
     public void PotFlowerCollected()
     {
         PottedFlower++;
-
+        Speaker.PlayOneShot(ScissorCut);
         if (PottedFlower == 1) // Activate Sculpture on first flower collect
         {
             SculptureAI_Interaction.ActivateSculpture();
