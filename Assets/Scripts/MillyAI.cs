@@ -94,7 +94,7 @@ public class MillyAI : MonoBehaviour
 
 
        // checks if player is sprinting while in the line of sight of Milly
-       if (PlayerInLineOfSight && WarnCooldown == 0 && Behavior == "Patrol")
+       if (PlayerInLineOfSight && WarnCooldown == 0 && Behavior == "Patrol" && PlayerMovement.TutorialComplete == true)
         {
             if (PlayerMovement.InDetention && PlayerMovement.IsInOffice == false)
             {

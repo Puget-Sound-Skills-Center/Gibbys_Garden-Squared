@@ -14,6 +14,7 @@ public class DialogueManagerStuff : MonoBehaviour
 
     // Icon Sprites (ADD MORE)
     public Sprite GibbyIcon;
+    public Sprite GibbyHappyIcon;
     public Sprite SculptureIcon;
     public Sprite SculptureIcon_Alt;
     // Milly Sprites
@@ -52,6 +53,10 @@ public class DialogueManagerStuff : MonoBehaviour
         if (Who == "Gibby")
         {
             IconImage.sprite = GibbyIcon;
+        }
+        if (Who == "GibbyHappy")
+        {
+            IconImage.sprite = GibbyHappyIcon;
         }
         if (Who == "Sculpture")
         {

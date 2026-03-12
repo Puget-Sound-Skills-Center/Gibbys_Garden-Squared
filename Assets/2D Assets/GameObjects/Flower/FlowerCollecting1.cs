@@ -6,7 +6,7 @@ using static Unity.VisualScripting.Member;
 public class FlowerCollecting : MonoBehaviour
 {
 
-    private int Flower = 0;
+    public int Flower = 0;
     private int FlowerQuota = 104;
 
     public int PottedFlower = 0;
@@ -21,6 +21,7 @@ public class FlowerCollecting : MonoBehaviour
     public TextMeshProUGUI PottedFlowerText;
 
     public SculptureAI_Interaction SculptureAI_Interaction;
+    public TutorialScript TutorialScript;
 
     void Start()
     {
@@ -57,9 +58,16 @@ public class FlowerCollecting : MonoBehaviour
     {
         PottedFlower++;
         Speaker.PlayOneShot(ScissorCut);
-        if (PottedFlower == 1) // Activate Sculpture on first flower collect
+        if (PottedFlower == 1 && TutorialScript.step == 2) // Advances tutorial
+        {
+            TutorialScript.step++;
+            TutorialScript.UpdateStep();
+        }
+        if (PottedFlower == 2) // Activate Sculpture on first flower collect
         {
             SculptureAI_Interaction.ActivateSculpture();
+            TutorialScript.step++;
+            TutorialScript.UpdateStep();
         }
 
         if (PottedFlower == PottedFlowerQuota)

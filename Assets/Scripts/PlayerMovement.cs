@@ -54,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
     public int DetentionTimer = 0;
     public float Detentionbuffer = 1f;
     public int SlowModifier = 0; // Chilled debuff reduces speed by 5 for both walk and run 
+    public bool TutorialComplete = false; // Disables most of the npc mechanics until this is set to true
 
     void Start()
     {
@@ -82,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (PauseMenu.alpha == 0)
             {

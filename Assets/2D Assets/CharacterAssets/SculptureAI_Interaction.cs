@@ -79,7 +79,7 @@ public class SculptureAI_Interaction : MonoBehaviour
                 Source.PlayOneShot(SculptureTalk);
                 dialogueManagerStuff.CharacterTalk("Sculpture", "What fun! we should do that again sometime! :D");
                 //Debug.Log("PLayer is set free");
-                countdown = 5f; // in seconds
+                countdown = 60f; // in seconds
                 NotifText.text = "";
                 PlayerMovement.ThawPlayer();
                 SculptureIsActive = false;

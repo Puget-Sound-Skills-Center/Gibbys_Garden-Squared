@@ -26,6 +26,7 @@ public class FlowerPot_Collection : MonoBehaviour
     private float nextFireTime = 0f;
 
     public FlowerCollecting Script;
+    public TutorialScript TutorialScript;
 
     private void Awake()
     {
@@ -42,7 +43,7 @@ public class FlowerPot_Collection : MonoBehaviour
             Script.PotFlowerCollected();
             interactionBar.text = "";
         }
-        if (playerInRange && Input.GetKey(KeyCode.E) && CanBeCollected == false && Time.time >= nextFireTime)
+        if (playerInRange && Input.GetKey(KeyCode.E) && CanBeCollected == false && Time.time >= nextFireTime && TutorialScript.step > 1)
         {
 
             progress += 15m;
@@ -107,7 +108,14 @@ public class FlowerPot_Collection : MonoBehaviour
                 }
                 else
                 {
-                    interactionBar.text = "[E] - Water (" + progress.ToString() + "%)";
+                    if (TutorialScript.step > 1)
+                    {
+                        interactionBar.text = "[E] - Water (" + progress.ToString() + "%)";
+                    }
+                    else
+                    {
+                        interactionBar.text = "I should go talk to Gibby first";
+                    }
                 }
             }
         }

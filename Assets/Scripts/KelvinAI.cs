@@ -77,7 +77,7 @@ public class KelvinAI : MonoBehaviour
 
         // Kelvin has sight of player
 
-        if (PlayerInLineOfSight && OnCooldown == false && Mode == "Wandering")
+        if (PlayerInLineOfSight && OnCooldown == false && Mode == "Wandering" && PlayerMovement.IsInOffice == false && PlayerMovement.TutorialComplete == true)
         {
             Mode = "Engaged";
             agent.destination = transform.position;
@@ -101,7 +101,7 @@ public class KelvinAI : MonoBehaviour
         }
 
         // Kelvin Main Mechanic
-        if (OnCooldown == false && Observing && Engaged == true && PlayerMovement.IsInOffice == false)
+        if (OnCooldown == false && Observing && Engaged == true && PlayerMovement.IsInOffice == false && PlayerMovement.TutorialComplete == true)
         {
             if (PlayerInLineOfSight)
             {
