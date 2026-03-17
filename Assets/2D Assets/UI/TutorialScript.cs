@@ -32,7 +32,7 @@ public class TutorialScript : MonoBehaviour
         {
             Tutorial.text = $"({step}/5) 'Report back to Gibby'";
         }
-        if (step == 4)
+        if (step == 4) // Unlocks the rest of the map
         {
             Destroy(blocker1);
             Destroy(blocker2);
