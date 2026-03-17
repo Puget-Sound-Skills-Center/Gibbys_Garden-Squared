@@ -43,7 +43,7 @@ public class TutorialScript : MonoBehaviour
             Tutorial.text = $"({step}/5) 'Collect the rest of the flowers then talk to Gibby'";
             PlayerMovement.TutorialComplete = true;
         }
-        if (step == 6)
+        if (step == 6) // Find the exit and win the game
         {
             Instantiate(Exit, new Vector3(-50.08f, 1.811094f, 55.01f), Quaternion.identity);
             Tutorial.text = $"({step}/5) Leave.";
