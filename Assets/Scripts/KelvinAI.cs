@@ -10,6 +10,7 @@ public class KelvinAI : MonoBehaviour
     public NavMeshAgent agent;
     public AI_PatrolPoints AI_PatrolPoints;
     public PlayerMovement PlayerMovement;
+    public SculptureAI_Interaction SculptureAI_Interaction;
     public DialogueManagerStuff DialogueManagerStuff;
     [SerializeField] private CanvasGroup SpotMechanic;
     public Image SpotImage;
@@ -77,7 +78,7 @@ public class KelvinAI : MonoBehaviour
 
         // Kelvin has sight of player
 
-        if (PlayerInLineOfSight && OnCooldown == false && Mode == "Wandering" && PlayerMovement.IsInOffice == false && PlayerMovement.TutorialComplete == true)
+        if (PlayerInLineOfSight && OnCooldown == false && Mode == "Wandering" && PlayerMovement.IsInOffice == false && PlayerMovement.TutorialComplete == true && SculptureAI_Interaction.IsHuggingPlayer == false)
         {
             Mode = "Engaged";
             agent.destination = transform.position;

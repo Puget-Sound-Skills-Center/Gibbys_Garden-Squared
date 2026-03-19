@@ -137,7 +137,7 @@ public class MillyAI : MonoBehaviour
 
     public void WarnPlayer()
     {
-        WarnCooldown = 3f;
+        WarnCooldown = 9f;
         WarnBuffer = 0f;
         PlayerMovement.Warns++;
         // Stages of Warn

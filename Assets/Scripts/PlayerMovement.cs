@@ -295,6 +295,6 @@ public class PlayerMovement : MonoBehaviour
     public void ChillPlayer()
     {
         Chilled = true;
-        ChillTimer = 7f;
+        ChillTimer = 5f; // Freeze player for 5 seconds
     }
 }

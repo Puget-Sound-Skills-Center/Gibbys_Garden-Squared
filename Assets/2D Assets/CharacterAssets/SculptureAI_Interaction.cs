@@ -79,7 +79,7 @@ public class SculptureAI_Interaction : MonoBehaviour
                 Source.PlayOneShot(SculptureTalk);
                 dialogueManagerStuff.CharacterTalk("Sculpture", "What fun! we should do that again sometime! :D");
                 //Debug.Log("PLayer is set free");
-                countdown = 60f; // in seconds
+                countdown = 20f; // in seconds
                 NotifText.text = "";
                 PlayerMovement.ThawPlayer();
                 SculptureIsActive = false;
@@ -92,7 +92,7 @@ public class SculptureAI_Interaction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) // Sculpture touches player
     {
-        if (other.transform.tag == "Player" && CanHugPlayer)
+        if (other.transform.tag == "Player" && CanHugPlayer && PlayerMovement.Chilled == false && PlayerMovement.InDetention == false)
         {
             //Debug.Log("Player Is Hugged!");
             Source.pitch = 1;
